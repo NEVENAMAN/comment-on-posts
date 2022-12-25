@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>post comment on course</title>
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css' %}" >
+    <link rel="stylesheet" href="{% static 'css/docs_min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap_min.css' %}">
+    <style>
+        .container{
+            width:1000px;
+            margin:100px auto;
+        }
+        .card{
+            box-shadow: 4px 4px 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Post a message</h1><br>
+        <div class="post_comment">
+            <form action="/add_message" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <div class="form-group">
+                        <textarea name="message_text" class="form-control" placeholder="write a message .."></textarea>
+                    </div>
+                    <input type="hidden" name="message_user_id" value="{{user.id}}">
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </fieldset>
+            </form>
+        </div><br><br>
+        {% for message in messages %}
+        <div class="commentes">
+        <div class="card">
+            <h5 class="card-header">Message</h5>
+            <div class="card-body">
+              <h5 class="card-title">message</h5>
+              <p class="card-text">{{message.context}}</p>
+              <a href="#" class="btn btn-primary">Like</a>
+            </div>
+            </div>
+          </div><br>
+                {% for comment in comments %}
+                <h5 class="card-title">comment</h5>
+                <p class="card-text">{{comment.context}}</p>
+                {% endfor %}
+                
+            <form action="/add_comment" method="post">
+                {% csrf_token %}
+                <fieldset>
+                    <div class="form-group">
+                        <textarea name="comment_text" class="form-control" placeholder="write comment .."></textarea>
+                    </div>
+                    <input type="hidden" name="comment_message_id" value="{{message.id}}">
+                    <input type="hidden" name="comment_user_id" value="{{user.id}}">
+                    <button type="submit" class="btn btn-primary">Post comment</button>
+                </fieldset>
+            </form>
+        {% endfor %}
+
+    </div>
+</body>
+</html>
