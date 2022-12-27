@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render,redirect
 from .models import *
 from django.contrib import messages
@@ -35,15 +36,10 @@ def login(request):
 
 def wall_page(request):
     message = Get_message_info(request)
-    comment = Get_comment_info(request)
-    comments_own_user = Get_user_comments(request)
     context = {
         "messages" : message,
-        "comments" : comment,
-        "comments_user" : comments_own_user,
     }
-    for key in comments_own_user:
-        print(key)
+   
 
     return render(request,'wall.html',context)
 
