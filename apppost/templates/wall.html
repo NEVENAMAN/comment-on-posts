@@ -47,10 +47,24 @@
             </div>
           </div><br>
                 {% for comment in comments %}
-                <h5 class="card-title">comment</h5>
-                <p class="card-text">{{comment.context}}</p>
+                    <h5 class="card-title">comment by {{user.first_name}} {{user.last_name}}</h5>
+                    <p class="card-text">{{comment.context}}</p>
                 {% endfor %}
-                
+                {% for comment_user in comments_user %}
+                    <form action="/del_comment" method="post">
+                        {% csrf_token %}
+                        <fieldset>
+                            <div class="form-group">
+                                <h5 class="card-title">MY comment</h5>
+                                <p class="card-text">{{comment_user.context}}</p>                          
+                              </div>
+                            <input type="hidden" name="comment_id" value="{{comment_user.id}}">
+                            <input type="hidden" name="comment_message_id" value="{{message.id}}">
+                            <input type="hidden" name="comment_user_id" value="{{user.id}}">
+                            <button type="submit" class="btn btn-primary">Delete</button>
+                        </fieldset>
+                    </form>
+                {% endfor %}
             <form action="/add_comment" method="post">
                 {% csrf_token %}
                 <fieldset>

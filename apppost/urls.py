@@ -8,4 +8,5 @@ urlpatterns = [
     path('wall_page',views.wall_page),
     path('add_message',views.add_message),
     path('add_comment',views.add_comment),
+    path('del_comment',views.del_comment),
 ]

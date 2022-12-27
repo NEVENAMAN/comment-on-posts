@@ -36,11 +36,15 @@ def login(request):
 def wall_page(request):
     message = Get_message_info(request)
     comment = Get_comment_info(request)
-
+    comments_own_user = Get_user_comments(request)
     context = {
         "messages" : message,
         "comments" : comment,
+        "comments_user" : comments_own_user,
     }
+    for key in comments_own_user:
+        print(key)
+
     return render(request,'wall.html',context)
 
 def add_message(request):
@@ -50,4 +54,10 @@ def add_message(request):
 def add_comment(request):
     AddComment(request)
     return redirect('/wall_page')
+
+def del_comment(request):
+    Del_Comment(request)
+    return redirect('/wall_page')
+
+
 

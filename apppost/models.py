@@ -62,6 +62,7 @@ def Register(request):
 
 def Login(request):
     user = User.objects.filter(email = request.POST['email'])
+    
     if user:
         loged_user = user[0]
         if bcrypt.checkpw(request.POST['password'].encode(), loged_user.password.encode()):
@@ -84,15 +85,24 @@ def AddComment(request):
     comment = request.POST['comment_text']
     message_id = request.POST['comment_message_id']
     message = Message.objects.get(id = message_id)
-    id = request.POST['comment_user_id']
-    user = User.objects.get(id = id)
+    request.session['id'] = request.POST['comment_user_id']
+    user = User.objects.get(id = request.session['id'])
     Comment.objects.create(context = comment , messages = message , users = user )
 # get comment info
 def Get_comment_info(request):
-    return Comment.objects.all()
+    return Comment.objects.exclude(users = request.session['id'])
 
 # get comments of current user
+def Get_user_comments(request):
+    user = User.objects.get(id = request.session['id'])
+    print(user.comments.all())
+    return user.comments.all()
 
+# delete own user comment by user
+def Del_Comment(request):
+    id = request.POST['comment_id']
+    comment = Comment.objects.get(id = id)
+    return comment.delete()
 
 
 
